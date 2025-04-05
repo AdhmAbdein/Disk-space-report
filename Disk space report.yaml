@@ -1,0 +1,17 @@
+---
+  - name: disk space report
+    hosts: all
+    tasks:
+      - name: check disk space
+        command: df -h
+        register: disk_space_output
+  
+      - name: save output of disk space usage
+        local_action:
+          module: copy
+          content: |
+            Host: {{ inventory_hostname }}
+                  {{ disk_space_output.stdout }}
+          dest: /adhamplaybooks/{{ inventory_hostname }}.txt
+  
+  
